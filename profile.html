@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profile • Casa Italiana</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Nunito:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body class="container">
+  <h1>Your Profile</h1>
+  <div id="info" class="card"></div>
+  <p><a href="settings.html">Settings</a> • <a href="cart.html">Cart</a> • <a href="index.html">Home</a></p>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script>
+    const supabase = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if(!user){ location.href = "login.html"; return; }
+      const div = document.getElementById('info');
+      const name = user.user_metadata?.full_name || "(no name)";
+      div.innerHTML = "<p><strong>Email:</strong> " + user.email + "</p>" +
+                      "<p><strong>Name:</strong> " + name + "</p>";
+    })();
+  </script>
+</body>
+</html>
